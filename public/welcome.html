@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmeenInt Dashboard</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('./AmeenX/Bg-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        h1 {
+            font-size: 4em;
+            text-shadow: 0 0 10px white;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 1.5em;
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            text-shadow: 0 0 5px white;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+        .button:hover {
+            box-shadow: 0 0 20px yellow;
+        }
+        .username {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            text-shadow: 0 0 5px white;
+        }
+    </style>
+</head>
+<body>
+    <div class="username"></div>
+    <div>
+        <h1>AmeenInt</h1>
+        <button class="button" onclick="openLink('https://github.com/AmeenRepo/KEIKO-V5')">GitHub</button>
+        <button class="button" onclick="openLink('https://wa.me/+916238768108?text=Hey+From+Web')">WhatsApp</button>
+        <button class="button" onclick="openLink('https://keiko-session.onrender.com')">Session Id</button>
+    </div>
+    <audio id="background-music" src="./AmeenX/Bg-music.mp3" loop autoplay></audio>
+    <script>
+        document.querySelector('.username').innerText = new URLSearchParams(window.location.search).get('username');
+
+        function openLink(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

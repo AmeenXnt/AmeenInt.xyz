@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmeenInt</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('./AmeenX/Bg-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        h1 {
+            font-size: 4em;
+            text-shadow: 0 0 10px white;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 1.5em;
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            text-shadow: 0 0 5px white;
+            transition: all 0.3s;
+        }
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>AmeenInt</h1>
+        <input type="email" id="email" placeholder="Enter Your Email" required>
+        <button class="button" onclick="sendOtp()">Send OTP</button>
+    </div>
+    <audio id="background-music" src="./AmeenX/Bg-music.mp3" loop autoplay></audio>
+    <script>
+        document.getElementById('background-music').play();
+
+        function sendOtp() {
+            const email = document.getElementById('email').value;
+            fetch('/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = `/verify-otp.html?email=${email}`;
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
