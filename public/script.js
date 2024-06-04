@@ -1,19 +1,37 @@
 function showHelp() {
-    alert("ABOUT AMEENINT WEBSITE:  This Is A Registration For Users I Am Ameen Int");
+    alert("Hey I Am AmeenInt. Its Maintaining Not Completed Wait.....");
 }
 
 function navigateToRegister() {
     window.location.href = "register.html";
 }
 
+function navigateToLogin() {
+    window.location.href = "login.html";
+}
+
 function promptForKey() {
-    window.location.href = "database.html";
+     window.location.href = "database.html";
 }
 
 document.getElementById('registerForm')?.addEventListener('submit', function (e) {
     e.preventDefault();
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
+
+    // Validate username (no spaces or symbols) and password (at least 8 characters, including numbers and symbols)
+    var usernamePattern = /^[a-zA-Z0-9]+$/;
+    var passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+    if (!usernamePattern.test(username)) {
+        alert("UserName Should Not Contain Spaces Or Symbols.");
+        return;
+    }
+
+    if (!passwordPattern.test(password)) {
+        alert("Password Must Be At Least 8 Characters Long And Include Numbers And Symbols.");
+        return;
+    }
 
     fetch('/register', {
         method: 'POST',
@@ -34,6 +52,31 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
     });
 });
 
+document.getElementById('loginForm')?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var username = document.getElementById('loginUsername').value;
+    var password = document.getElementById('loginPassword').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = "welcome.html"; // Change to the actual protected page
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
 function checkKey() {
     var key = document.getElementById('keyInput').value;
     if (key === "MEERAMEEN$") {
@@ -41,7 +84,7 @@ function checkKey() {
             .then(response => response.json())
             .then(data => {
                 var content = document.getElementById('databaseContent');
-                content.innerHTML = "<h3>User Database:</h3>";
+                content.innerHTML = "<h3>AMEENINT STORED:</h3>";
                 var table = `<table>
                                 <tr>
                                     <th>Username</th>
@@ -62,6 +105,6 @@ function checkKey() {
                 console.error('Error:', error);
             });
     } else {
-        alert("KEY Is Incorrect U Cant Access Its Only For Ameen And Ameen's Agents.");
+        alert("U Cant Access This Page. Only Ameen And Agents Can Access.");
     }
 }
