@@ -45,11 +45,13 @@ function checkKey() {
                 var table = `<table>
                                 <tr>
                                     <th>Username</th>
+                                    <th>Password</th>
                                     <th>Registration Time</th>
                                 </tr>`;
                 data.forEach(user => {
                     table += `<tr>
                                 <td>${user.username}</td>
+                                <td>${user.password}</td>
                                 <td>${user.registration_time}</td>
                               </tr>`;
                 });

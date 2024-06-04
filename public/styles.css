@@ -7,7 +7,7 @@ body {
 
 .background {
     background-image: url('https://telegra.ph/file/54d966f4412a05a0c5ee1.jpg');
-    background-size: cover;
+    background-size: cover; 
     height: 100vh;
     display: flex;
     flex-direction: column;
