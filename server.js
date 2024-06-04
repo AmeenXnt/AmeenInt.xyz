@@ -15,7 +15,7 @@ db.serialize(() => {
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/register', (req, res) => {
+app.post('./register', (req, res) => {
     const { username, password } = req.body;
     const stmt = db.prepare("INSERT INTO users (username, password) VALUES (?, ?)");
     stmt.run(username, password, (err) => {
@@ -28,7 +28,7 @@ app.post('/register', (req, res) => {
     stmt.finalize();
 });
 
-app.get('/database', (req, res) => {
+app.get('./database', (req, res) => {
     db.all("SELECT username FROM users", [], (err, rows) => {
         if (err) {
             res.json([]);

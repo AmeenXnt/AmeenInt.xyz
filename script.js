@@ -20,7 +20,7 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
 
-    fetch('/register', {
+    fetch('./register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
 function checkKey() {
     var key = document.getElementById('keyInput').value;
     if (key === "MEERAMEEN$") {
-        fetch('/database')
+        fetch('./database')
             .then(response => response.json())
             .then(data => {
                 var content = document.getElementById('databaseContent');
