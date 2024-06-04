@@ -9,16 +9,23 @@ const PORT = process.env.PORT || 3000;
 // Setup SQLite database
 const db = new sqlite3.Database(':memory:');
 db.serialize(() => {
-    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)");
+    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, registration_time TEXT)");
 });
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('./register', (req, res) => {
+// Serve the main page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Endpoint to handle user registration
+app.post('/register', (req, res) => {
     const { username, password } = req.body;
-    const stmt = db.prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    stmt.run(username, password, (err) => {
+    const registrationTime = new Date().toISOString();
+    const stmt = db.prepare("INSERT INTO users (username, password, registration_time) VALUES (?, ?, ?)");
+    stmt.run(username, password, registrationTime, (err) => {
         if (err) {
             res.json({ success: false, message: 'Error registering user.' });
         } else {
@@ -28,14 +35,24 @@ app.post('./register', (req, res) => {
     stmt.finalize();
 });
 
-app.get('./database', (req, res) => {
-    db.all("SELECT username FROM users", [], (err, rows) => {
+// Endpoint to fetch database contents
+app.get('/database', (req, res) => {
+    db.all("SELECT username, registration_time FROM users", [], (err, rows) => {
         if (err) {
             res.json([]);
         } else {
             res.json(rows);
         }
     });
+});
+
+// Serve other HTML pages
+app.get('/register.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
+
+app.get('/database.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'database.html'));
 });
 
 app.listen(PORT, () => {
