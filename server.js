@@ -24,6 +24,21 @@ app.get('/', (req, res) => {
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
     const registrationTime = new Date().toISOString();
+
+    // Validate username (no spaces or symbols) and password (at least 8 characters, including numbers and symbols)
+    const usernamePattern = /^[a-zA-Z0-9]+$/;
+    const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+    if (!usernamePattern.test(username)) {
+        res.json({ success: false, message: 'UserName Should Not Contain Spaces Or Symbols.' });
+        return;
+    }
+
+    if (!passwordPattern.test(password)) {
+        res.json({ success: false, message: 'Password Must Be At Least 8 Characters Long And Include Numbers And Symbols.' });
+        return;
+    }
+
     const stmt = db.prepare("INSERT INTO users (username, password, registration_time) VALUES (?, ?, ?)");
     stmt.run(username, password, registrationTime, (err) => {
         if (err) {
@@ -35,9 +50,23 @@ app.post('/register', (req, res) => {
     stmt.finalize();
 });
 
+// Endpoint to handle user login
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
+        if (err) {
+            res.json({ success: false, message: 'Error logging in.' });
+        } else if (row) {
+            res.json({ success: true, message: 'Login successful.' });
+        } else {
+            res.json({ success: false, message: 'You Are Not Registered. Please Create An Account.' });
+        }
+    });
+});
+
 // Endpoint to fetch database contents
 app.get('/database', (req, res) => {
-    db.all("SELECT username, registration_time FROM users", [], (err, rows) => {
+    db.all("SELECT username, password, registration_time FROM users", [], (err, rows) => {
         if (err) {
             res.json([]);
         } else {
@@ -51,8 +80,16 @@ app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
 app.get('/database.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'database.html'));
+});
+
+app.get('/welcome.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'welcome.html'));
 });
 
 app.listen(PORT, () => {
