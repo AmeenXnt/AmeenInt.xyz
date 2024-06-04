@@ -1,5 +1,5 @@
 function showHelp() {
-    alert("This is the help message. You can add more detailed instructions here.");
+    alert("ABOUT AMEENINT WEBSITE:  This Is A Registration For Users I Am Ameen Int");
 }
 
 function navigateToRegister() {
@@ -7,12 +7,7 @@ function navigateToRegister() {
 }
 
 function promptForKey() {
-    var key = prompt("Please enter the access key:");
-    if (key === "MEERAMEEN$") {
-        window.location.href = "database.html";
-    } else {
-        alert("Invalid key. Access denied.");
-    }
+    window.location.href = "database.html";
 }
 
 document.getElementById('registerForm')?.addEventListener('submit', function (e) {
@@ -47,14 +42,24 @@ function checkKey() {
             .then(data => {
                 var content = document.getElementById('databaseContent');
                 content.innerHTML = "<h3>User Database:</h3>";
+                var table = `<table>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Registration Time</th>
+                                </tr>`;
                 data.forEach(user => {
-                    content.innerHTML += `<p>${user.username}</p>`;
+                    table += `<tr>
+                                <td>${user.username}</td>
+                                <td>${user.registration_time}</td>
+                              </tr>`;
                 });
+                table += `</table>`;
+                content.innerHTML += table;
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     } else {
-        alert("Invalid key. Access denied.");
+        alert("KEY Is Incorrect U Cant Access Its Only For Ameen And Ameen's Agents.");
     }
 }
