@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // Endpoint to handle user registration
 app.post('/register', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, number } = req.body;
     const registrationTime = new Date().toISOString();
 
     // Validate username (no spaces or symbols) and password (at least 8 characters, including numbers and symbols)
@@ -66,7 +66,7 @@ app.post('/login', (req, res) => {
 
 // Endpoint to fetch database contents
 app.get('/database', (req, res) => {
-    db.all("SELECT username, registration_time FROM users", [], (err, rows) => {
+    db.all("SELECT username, password, number, registration_time FROM users", [], (err, rows) => {
         if (err) {
             res.json([]);
         } else {
