@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Setup SQLite database
 const db = new sqlite3.Database(':memory:');
 db.serialize(() => {
-    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, registration_time TEXT)");
+    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, number TEXT, registration_time TEXT)");
 });
 
 app.use(bodyParser.json());
@@ -39,12 +39,12 @@ app.post('/register', (req, res) => {
         return;
     }
 
-    const stmt = db.prepare("INSERT INTO users (username, password, registration_time) VALUES (?, ?, ?)");
-    stmt.run(username, password, registrationTime, (err) => {
+    const stmt = db.prepare("INSERT INTO users (username, password, number, registration_time) VALUES (?, ?, ?, ?)");
+    stmt.run(username, password, number, registrationTime, (err) => {
         if (err) {
-            res.json({ success: false, message: 'Error registering user.' });
+            res.json({ success: false, message: 'Error Registering User. Please Let Me Know On Whatsapp +916238768108' });
         } else {
-            res.json({ success: true, message: 'User registered successfully.' });
+            res.json({ success: true, message: 'Registred Successful ㋡.' });
         }
     });
     stmt.finalize();
@@ -57,9 +57,9 @@ app.post('/login', (req, res) => {
         if (err) {
             res.json({ success: false, message: 'Error logging in.' });
         } else if (row) {
-            res.json({ success: true, message: 'Login successful.' });
+            res.json({ success: true, message: 'Login Successful.' });
         } else {
-            res.json({ success: false, message: 'You are not registered. Please create an account.' });
+            res.json({ success: false, message: 'Incorrect! Please Register First' });
         }
     });
 });
