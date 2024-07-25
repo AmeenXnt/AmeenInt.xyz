@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
         } else if (row) {
             res.json({ success: true, message: 'Login Successful.' });
         } else {
-            res.json({ success: false, message: 'Incorrect! Please Register First' });
+            res.json({ success: false, message: 'Incorrect! Please Register First.' });
         }
     });
 });
@@ -88,8 +88,8 @@ app.get('/database.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'database.html'));
 });
 
-app.get('/welcome.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'welcome.html'));
+app.get('https://api-ameen.vercel.app', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'https://api-ameen.vercel.app'));
 });
 
 app.listen(PORT, () => {
