@@ -121,6 +121,15 @@
     <button class="play-button" onclick="openPlayer('https://i.imgur.com/cztI9zU.jpeg', 'Keiko Music', 'AmeenSer', 'Bg-music.mp3')">Play</button>
 </div>
 
+    <div class="song">
+    <img src="https://i.imgur.com/cztI9zU.jpeg" alt="AmeenInt">
+    <div class="song-info">
+        <p class="song-title">Keiko music</p>
+        <p class="song-artist">Ameen Ser</p>
+    </div>
+    <button class="play-button" onclick="openPlayer('https://i.imgur.com/cztI9zU.jpeg', 'Innalakalil', 'AmeenSer', 'https://i.imgur.com/7ZunlyH.mp4')">Play</button>
+    </div>
+    
 <div class="song">
     <img src="https://i.imgur.com/glXj6Mb.jpeg" alt="AmeenInt">
     <div class="song-info">
@@ -166,6 +175,21 @@
         document.getElementById('player-popup').style.display = 'none';
         document.getElementById('audio-player').pause();
     }
+    function filterSongs() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let songs = document.getElementsByClassName('song');
+
+        for (let i = 0; i < songs.length; i++) {
+            let title = songs[i].getElementsByClassName('song-title')[0].innerText.toLowerCase();
+            let artist = songs[i].getElementsByClassName('song-artist')[0].innerText.toLowerCase();
+            
+            if (title.includes(input) || artist.includes(input)) {
+                songs[i].style.display = 'flex';
+            } else {
+                songs[i].style.display = 'none';
+            }
+        }
+                                }
 </script>
 
 </body>
