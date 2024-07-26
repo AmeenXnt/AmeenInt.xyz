@@ -9,79 +9,142 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f0f0f0;
         }
-        .header {
-            background-color: red;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .media-item {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .media-item h2 {
-            margin-top: 0;
-        }
-        .media-item .play-button {
-            background-color: #4CAF50;
+        header {
+            background-color: #1db954;
             color: white;
-            border: none;
-            padding: 10px 20px;
+            padding: 15px 20px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-top: 10px;
+        }
+        .song {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .song img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .song-info {
+            flex-grow: 1;
+            margin-left: 15px;
+        }
+        .song-title {
+            font-size: 18px;
+            margin: 0;
+        }
+        .song-artist {
+            font-size: 14px;
+            color: #555;
+        }
+        .play-button {
+            background-color: #1db954;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
             cursor: pointer;
+        }
+        .play-button:hover {
+            background-color: #1ed760;
+        }
+        .player-popup {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 300px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+        }
+        .player-popup img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .player-popup .song-info {
+            margin-left: 15px;
+        }
+        .close-button {
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        .close-button:hover {
+            background-color: #ff6666;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Keiko Media</h1>
+
+<header>
+    <h1>Keiko Media</h1>
+</header>
+
+<div class="song">
+    <img src="https://api-ameen.vercel.app/AmeenInt.png" alt="Song 1">
+    <div class="song-info">
+        <p class="song-title">Keiko music</p>
+        <p class="song-artist">Ameen Ser</p>
     </div>
-    <div class="container" id="media-container">
-        <!-- Content loaded dynamically from API will go here -->
+    <button class="play-button" onclick="openPlayer('https://api-ameen.vercel.app/AmeenInt.png', 'Ameen Ser Music', 'AmeenSer', 'https://api-ameen.vercel.app/Audio/Bg-music.mp3')">Play</button>
+</div>
+
+<div class="song">
+    <img src="song2.jpg" alt="Song 2">
+    <div class="song-info">
+        <p class="song-title">Song Title 2</p>
+        <p class="song-artist">Artist 2</p>
     </div>
+    <button class="play-button" onclick="openPlayer('song2.jpg', 'Song Title 2', 'Artist 2', 'song2.mp3')">Play</button>
+</div>
 
-    <script>
-        // Fetch data from your API
-        fetch('https://api-ameen.vercel.app/Audio/Bg-music.mp3')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('media-container');
-                data.forEach(item => {
-                    const mediaItem = document.createElement('div');
-                    mediaItem.classList.add('media-item');
+<div id="player-popup" class="player-popup">
+    <img id="player-img" src="" alt="Playing song">
+    <div class="song-info">
+        <p id="player-title" class="song-title"></p>
+        <p id="player-artist" class="song-artist"></p>
+    </div>
+    <button class="close-button" onclick="closePlayer()">X</button>
+    <audio id="audio-player" controls>
+        <source id="audio-source" src="" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+</div>
 
-                    const title = document.createElement('h2');
-                    title.textContent = item.title;
-                    mediaItem.appendChild(title);
+<script>
+    function openPlayer(image, title, artist, audioSrc) {
+        document.getElementById('player-img').src = image;
+        document.getElementById('player-title').innerText = title;
+        document.getElementById('player-artist').innerText = artist;
+        document.getElementById('audio-source').src = audioSrc;
+        document.getElementById('audio-player').load();
+        document.getElementById('player-popup').style.display = 'flex';
+    }
 
-                    const playButton = document.createElement('button');
-                    playButton.classList.add('play-button');
-                    playButton.textContent = 'Play';
-                    playButton.addEventListener('click', () => {
-                        // You can add code here to play the audio in a popup or background
-                        alert('Playing: ' + item.title);
-                    });
-                    mediaItem.appendChild(playButton);
+    function closePlayer() {
+        document.getElementById('player-popup').style.display = 'none';
+        document.getElementById('audio-player').pause();
+    }
+</script>
 
-                    container.appendChild(mediaItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    </script>
 </body>
-</html>
+    </html>
+            
