@@ -68,7 +68,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function (e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            window.location.href = "https://api-ameen.vercel.app"; // Change to the actual protected page
+            window.location.href = "welcome.html"; // Change to the actual protected page
         } else {
             alert(data.message);
         }
